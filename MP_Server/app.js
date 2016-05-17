@@ -12,6 +12,7 @@ var app = express();
 var test=require('./routes/test');
 var search=require('./routes/search');
 var init=require('./routes/init');
+var insert=require('./routes/insert');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,6 +30,7 @@ app.use('/users', users);
 app.use('/test',test);
 app.use('/search',search);
 app.use('/init',init);
+app.use('/insert',insert);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
