@@ -34,10 +34,11 @@ var async=require('async');
 var Query=module.exports={
 	insertData:function(con,data,res){
 		var resend=res;
-		var condition=con;
+		if(con){
 		async.waterfall([
-			function(res){
-				var item=new product({
+			function(insert){
+				var result='';
+				productdb.insert({
 					p_idx:data.p_idx,
 					name:data.name,
 					price:data.price,
@@ -45,15 +46,51 @@ var Query=module.exports={
 					url:data.url,
 					explain:data.explain,
 					s_idx:data.s_idx
+					},function(err,doc){
+						if(err) result=err;
+						else result='success';
+					insert(null,result);
 				});
-				item.save(function(err,silence){
-					if(err) console.log(err);	
-					console.log(data);
-				});
-				console.log(data);
-				resend.send('success');
-			}		
-		]);
+				//var item=new product({
+				//	p_idx:data.p_idx,
+				//	name:data.name,
+				//	price:data.price,
+				//	s_price:data.s_price,
+				//	url:data.url,
+				//	explain:data.explain,
+				//	s_idx:data.s_idx
+				//});
+				//item.save(function(err,silence){
+				//	if(err) console.log(err);	
+				//	console.log(data);
+				//});
+				//console.log(data);
+				//resend.send('success');
+			},function(result,insert){
+				res.send(result);
+				res.end();
+			}	
+			]);
+		}else{
+			async.waterfall([
+				function(insert){
+					var result='';
+					storedb.insert({
+						s_idx:data.s_idx,
+						name:data.name,
+						lat:data.lat,
+						lng:data.lng
+						},function(err,doc){
+							if(err) result=err;
+							else result='success';
+							insert(null,result);
+					});
+				},function(result,insert){
+					res.send(result);
+					res.end();
+				}		
+			]);
+		}
 	},
 	searchData: function(con,data,res){
 		//resend=res;
