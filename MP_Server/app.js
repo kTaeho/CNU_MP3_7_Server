@@ -13,6 +13,7 @@ var test=require('./routes/test');
 var search=require('./routes/search');
 var init=require('./routes/init');
 var insert=require('./routes/insert');
+var list=require('./routes/p_list');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -31,6 +32,7 @@ app.use('/test',test);
 app.use('/search',search);
 app.use('/init',init);
 app.use('/insert',insert);
+app.use('/list',list);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

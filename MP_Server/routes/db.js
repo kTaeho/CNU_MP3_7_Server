@@ -29,6 +29,7 @@ var store=mongoose.model('store',storeSchema);
 var product=mongoose.model('product',productSchema);
 var db=mongoose.connection;
 var productdb=db.collection('product');
+var storedb=db.collection('store');
 var async=require('async');
 var Query=module.exports={
 	insertData:function(con,data,res){
@@ -54,9 +55,10 @@ var Query=module.exports={
 			}		
 		]);
 	},
-	searchData: function(data,res){
+	searchData: function(con,data,res){
 		//resend=res;
 		console.log(data);
+		if(con){
 		async.waterfall([
 			function(search){
 				var result='';
@@ -71,7 +73,21 @@ var Query=module.exports={
 				res.send(result);
 				res.end();
 			}
+		]);
+		}else{
+		async.waterfall([
+			function(search){
+				var result='';
+				storedb.find({s_idx:data}).toArray(function(err,doc){
+					result=doc;
+					search(null,result);
+				});
+			},function(result,search){
+				res.send(result);
+				res.end();
+			}		
 		]);	
+		}
 	},
 	initData:function(res){
 		async.waterfall([
@@ -94,6 +110,20 @@ var Query=module.exports={
 				res.end();
 			}
 		]);
+	},
+	productList:function(serial,res){
+		async.waterfall([
+			function(list){
+				var result='';
+				productdb.find({s_idx:serial}).toArray(function(err,doc){
+					result=doc;
+					list(null,result);
+				});
+			},function(result,list){
+				res.send(result);
+				res.end();
+			}		
+		]);    
 	}
 };
 //var async=require('async');

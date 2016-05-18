@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<head>
+    <meta charset="utf-8">
+    <title>화장품</title>
+</head>
+<body>
+    <form id='s_insert' action="/s_insert" name="s_insert_form" method="post">
+        <h1>화장품</h1>
+      <h3>상점</h3>
+        <p><label>상점코드 : <input type="text" name="shopcode" placeholder="상점코드 입력" required></label></p>
+       
+      <p><label>상점이름 : <input type="text" name="shopname" placeholder="상점이름 입력" required></label></p>
+        
+      <p><label>위도 : <input type="text" name="xx" placeholder="위도 입력" required></label></p>
+       
+      <p><label>경도 : <input type="text" name="yy" placeholder="경도 입력" required></label></p>
+        <input type="submit" value="저장">
+	</form>
+     <form id='p_insert' action="/p_insert" name="p_insert_form" method="post">
+      <h3>상품</h3>
+      <p><label>상점코드 : <input type="text" name="shopcode" placeholder="상점코드 입력" required></label></p>
+      
+      <p><label>상점이름 : <input type="text" name="shopname" placeholder="상점이름 입력" required></label></p>
+     
+      <p><label>정가 : <input type="text" name="price" placeholder="정가 입력" required></label></p>
+    
+      <p><label>할인가 : <input type="text" name="saleprice" placeholder="할인가 입력" required></label></p>
+      
+      <p><label>사진URL : <input type="text" name="picurl" placeholder="사진URL 입력" required></label></p>
+      
+      <p><label>상품소개 : <input type="text" name="intro" placeholder="상품소개 입력" required></label></p>
+   
+      <p><label>상품코드 : <input type="text" name="shopcode" placeholder="상품코드 입력" required></label></p>
+        <input type="submit" value="저장">
+    </form>
+
+</body>
 </html>
