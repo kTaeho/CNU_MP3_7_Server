@@ -31,6 +31,10 @@ var db=mongoose.connection;
 var productdb=db.collection('product');
 var storedb=db.collection('store');
 var async=require('async');
+var date=require('date-utils');
+var dateObj=new Date();
+var currentTime=dateObj.toFormat('YYMMDDHH24MI');
+console.log(currentTime);
 var Query=module.exports={
 	insertData:function(con,data,res){
 		var resend=res;
