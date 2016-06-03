@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose=require('mongoose');
+var measure_dis=require('./measure_dis');
 mongoose.connect('mongodb://localhost:27017/MP3',function(err){
 	if(err)
 		conolse.log('mongoose connection error:'+err);
@@ -130,7 +131,57 @@ var Query=module.exports={
 		]);	
 		}
 	},
-	initData:function(res){
+	init_s_Data:function(source_lat,source_lng,res){
+		async.waterfall([
+			function(init){
+				var result='';
+				storedb.find().toArray(function(err,doc){
+					result=doc;
+					console.log(result);
+					init(null,result);
+				});
+				//product.find({},function(err,doc){
+				//	if(err) 
+				//		console.log('error ocuured in the database');
+				//	result=doc;	
+				//});
+				//init(null,result);
+			},function(result,init){
+				var convertString=JSON.stringify(result);
+				var temp=convertString.substring(
+					1,convertString.length-1);
+			//	var convertJSON=JSON.parse(temp);
+				var index=0;
+				var split=[];
+				var count=0;
+				while(index<temp.length){
+					var s_index=temp.indexOf('{',index);
+					var e_index=temp.indexOf('}',index);
+					index=e_index+1;
+					split[count++]=temp.substring(
+							s_index,e_index+1);
+				}
+				console.log(split[0]);
+				res.send(result);
+				var dis_array=[];
+				var jsonObj_array=[];
+				for(var i=0;i<split.length;i++){
+					jsonObj_array[i]=
+						JSON.parse(split[i]);
+					dis_array[i]=
+						measure_dis.calcDistance(
+						jsonObj_array[i].lat,
+						jsonObj_array[i].lng,
+						source_lat,source_lng);
+					console.log(dis_array[i]);
+				}
+				
+				
+				res.end();
+			}
+		]);
+	},
+	init_p_Data:function(res){
 		async.waterfall([
 			function(init){
 				var result='';
@@ -146,8 +197,10 @@ var Query=module.exports={
 				//});
 				//init(null,result);
 			},function(result,init){
+			
 				res.send(result);
-				console.log(result);
+				//console.log(result);
+				//console.log(temp);
 				res.end();
 			}
 		]);
@@ -167,30 +220,3 @@ var Query=module.exports={
 		]);    
 	}
 };
-//var async=require('async');
-/* GET home page. */
-//router.get('/', function(req, res, next) {
- // res.render('index', { title: 'Express' });
-//	async.waterfall([
-//		function(res){
-//		var testValue=req.query.test;
-//		console.log('request :'+testValue);
-//		var collection=db.collection('store');
-
-//		collection.find({'serial':testValue}).toArray(function( err,doc){
-				
-//			console.log(doc);
-//		});
-	//	res.send({'test':testValue,imageUrl:'http://112.166.55.38:9738/images/no_image.png'});
-	//	res.send('http://112.166.55.38:9738/images/no_image.png');
-		//res.send(result);
-//		res.end();
-		//	find(null,testValue);
-//		},
-//		function(value,find){
-		//	console.log('waterfall:'+value);
-//		}
-//	]);
-//});
-
-//module.exports = router;
