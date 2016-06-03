@@ -161,11 +161,11 @@ var Query=module.exports={
 					split[count++]=temp.substring(
 							s_index,e_index+1);
 				}
-				console.log(split[0]);
-				res.send(result);
+			//	console.log(split[0]);
+			//	res.send(result);
 				var dis_array=[];
-				var jsonObj_array=[];
-				for(var i=0;i<split.length;i++){
+				var jsonObj_array=[],i,j,tmp;
+				for(i=0;i<split.length;i++){
 					jsonObj_array[i]=
 						JSON.parse(split[i]);
 					dis_array[i]=
@@ -176,7 +176,31 @@ var Query=module.exports={
 					console.log(dis_array[i]);
 				}
 				
-				
+				for(i=0;i<dis_array.length;i++){
+					for(j=i+1;j<dis_array.length;j++){
+						if(dis_array[i]>dis_array[j]){
+							console.log(dis_array[i]+'>'+dis_array[j]);
+							tmp=dis_array[i];
+							dis_array[i]=dis_array[j];
+							dis_array[j]=tmp;
+							tmp=split[i];
+							split[i]=split[j];
+							split[j]=tmp;
+						}
+					}
+				}
+				console.log('sort result');
+				for(i=0;i<dis_array.length;i++){
+					console.log(dis_array[i]);
+				}
+				var sort_result='';
+				for(i=0;i<split.length;i++){
+					sort_result+=split[i];
+				}
+				init(null,sort_result);
+				//res.end();
+			},function(result,init){
+				res.send(result);
 				res.end();
 			}
 		]);
@@ -220,3 +244,4 @@ var Query=module.exports={
 		]);    
 	}
 };
+
